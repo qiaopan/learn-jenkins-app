@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        //failure
+        //ok
 
         stage('Test') {
             agent {

@@ -2,29 +2,9 @@ pipeline {
     agent any
 
     stages {
-        // this is a comment
+        /*
 
-
-        // stage('Build') {
-        //     agent {
-        //         docker {
-        //             image 'node:18-alpine'
-        //             reuseNode true
-        //         }
-        //     }
-        //     steps {
-        //         sh '''
-        //             ls -la
-        //             node --version
-        //             npm --version
-        //             npm ci
-        //             npm run build
-
-        //         '''
-        //     }
-        // }
-
-        stage ('Test') {
+        stage('Build') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -33,20 +13,41 @@ pipeline {
             }
             steps {
                 sh '''
-                    test -f build/index.html
+                    ls -la
+                    node --version
+                    npm --version
+                    npm ci
+                    npm run build
+                    ls -la
+                '''
+            }
+        }
+        */
+
+        stage('Test') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+
+            steps {
+                sh '''
+                    #test -f build/index.html
                     npm test
                 '''
             }
         }
 
-        stage ('E2E') {
+        stage('E2E') {
             agent {
                 docker {
-                    image 'mcr.microsoft.com/playwright:v1.49.0-noble'
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                     reuseNode true
-                   
                 }
             }
+
             steps {
                 sh '''
                     npm install serve
@@ -57,6 +58,7 @@ pipeline {
             }
         }
     }
+
     post {
         always {
             junit 'jest-results/junit.xml'

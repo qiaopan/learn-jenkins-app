@@ -24,8 +24,7 @@ pipeline {
             steps {
                 sh '''
                     test -f build/index.html
-                    cd src
-                    npm test
+                    npm test src/App.test.js
                 '''
             }
         }
